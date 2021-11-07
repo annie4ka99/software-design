@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class AddProductServletTest extends ServletTest {
     private AddProductServlet addProductServlet = new AddProductServlet();
@@ -21,6 +21,9 @@ public class AddProductServletTest extends ServletTest {
 
         addProductServlet.doGet(httpServletRequest, httpServletResponse);
         addProductServlet.doGet(httpServletRequest, httpServletResponse);
+
+        verify(printWriter, times(2)).println("OK");
+        verifyNoMoreInteractions(printWriter);
 
         String sqlQuery = "SELECT " +nameColumn + ", " + priceColumn + " FROM " + tableName;
         List<HashMap<String,Object>> res = executeQuery(sqlQuery);

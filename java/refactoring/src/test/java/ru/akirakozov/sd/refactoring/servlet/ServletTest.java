@@ -26,9 +26,6 @@ public abstract class ServletTest {
     @Mock
     protected PrintWriter printWriter;
 
-    @Captor
-    protected ArgumentCaptor<String> stringArgumentCaptor;
-
     protected final String tableName = "PRODUCT";
 
     protected final String nameColumn = "NAME";
@@ -38,6 +35,9 @@ public abstract class ServletTest {
     protected final String name2 = "product2";
     protected final int price2 = 2;
     protected final int price1 = 1;
+
+    protected final String pageStartHtml = "<html><body>";
+    protected final String pageEndHtml = "</body></html>";
 
     @Before
     public void setUp() throws Exception{

@@ -1,12 +1,9 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
-import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.List;
+import org.mockito.InOrder;
 
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 public class GetProductServletTest extends ServletTest{
     private GetProductsServlet getProductsServlet = new GetProductsServlet();
@@ -20,11 +17,11 @@ public class GetProductServletTest extends ServletTest{
 
         getProductsServlet.doGet(httpServletRequest, httpServletResponse);
 
-        verify(printWriter, times(4)).println(stringArgumentCaptor.capture());
-        List<String> arguments =  stringArgumentCaptor.getAllValues();
-
-        Assert.assertEquals(4, arguments.size());
-        Assert.assertEquals(name1 + "\t" + price1 + "</br>", arguments.get(1));
-        Assert.assertEquals(name2 + "\t" + price2 + "</br>", arguments.get(2));
+        InOrder inOrder = inOrder(printWriter);
+        inOrder.verify(printWriter).println(pageStartHtml);
+        inOrder.verify(printWriter).println(name1 + "\t" + price1 + "</br>");
+        inOrder.verify(printWriter).println(name2 + "\t" + price2 + "</br>");
+        inOrder.verify(printWriter).println(pageEndHtml);
+        verifyNoMoreInteractions(printWriter);
     }
 }

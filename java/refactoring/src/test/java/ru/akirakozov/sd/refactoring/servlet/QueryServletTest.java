@@ -1,18 +1,11 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
+import org.junit.*;
+import org.mockito.InOrder;
 
-import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
-import java.util.List;
 
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 public class QueryServletTest extends ServletTest {
     private QueryServlet queryServlet = new QueryServlet();
@@ -37,10 +30,11 @@ public class QueryServletTest extends ServletTest {
 
         queryServlet.doGet(httpServletRequest, httpServletResponse);
 
-        verify(printWriter, times(4)).println(stringArgumentCaptor.capture());
-        List<String> arguments =  stringArgumentCaptor.getAllValues();
-
-        Assert.assertEquals(name2 + "\t" + price2 + "</br>", arguments.get(2));
+        InOrder inOrder = inOrder(printWriter);
+        inOrder.verify(printWriter).println(pageStartHtml);
+        inOrder.verify(printWriter).println("<h1>Product with max price: </h1>");
+        inOrder.verify(printWriter).println(name2 + "\t" + price2 + "</br>");
+        inOrder.verify(printWriter).println(pageEndHtml);
     }
 
     @Test
@@ -50,10 +44,11 @@ public class QueryServletTest extends ServletTest {
 
         queryServlet.doGet(httpServletRequest, httpServletResponse);
 
-        verify(printWriter, times(4)).println(stringArgumentCaptor.capture());
-        List<String> arguments =  stringArgumentCaptor.getAllValues();
-
-        Assert.assertEquals(name1 + "\t" + price1 + "</br>", arguments.get(2));
+        InOrder inOrder = inOrder(printWriter);
+        inOrder.verify(printWriter).println(pageStartHtml);
+        inOrder.verify(printWriter).println("<h1>Product with min price: </h1>");
+        inOrder.verify(printWriter).println(name1 + "\t" + price1 + "</br>");
+        inOrder.verify(printWriter).println(pageEndHtml);
     }
 
     @Test
@@ -65,9 +60,11 @@ public class QueryServletTest extends ServletTest {
 
         queryServlet.doGet(httpServletRequest, httpServletResponse);
 
-        verify(printWriter, times(1)).println(anyInt());
-        verify(printWriter, times(3)).println(stringArgumentCaptor.capture());
-        verify(printWriter).println(price1 + price2);
+        InOrder inOrder = inOrder(printWriter);
+        inOrder.verify(printWriter).println(pageStartHtml);
+        inOrder.verify(printWriter).println("Summary price: ");
+        inOrder.verify(printWriter).println(price1 + price2);
+        inOrder.verify(printWriter).println(pageEndHtml);
     }
 
     @Test
@@ -79,9 +76,11 @@ public class QueryServletTest extends ServletTest {
 
         queryServlet.doGet(httpServletRequest, httpServletResponse);
 
-        verify(printWriter, times(1)).println(anyInt());
-        verify(printWriter, times(3)).println(anyString());
-        verify(printWriter).println(2);
+        InOrder inOrder = inOrder(printWriter);
+        inOrder.verify(printWriter).println(pageStartHtml);
+        inOrder.verify(printWriter).println("Number of products: ");
+        inOrder.verify(printWriter).println(2);
+        inOrder.verify(printWriter).println(pageEndHtml);
     }
 
     @Test
@@ -96,5 +95,11 @@ public class QueryServletTest extends ServletTest {
         verify(printWriter).println("Unknown command: " + commandUnknown);
     }
 
+    @Override
+    @After
+    public void truncate() throws SQLException {
+        verifyNoMoreInteractions(printWriter);
 
+        super.truncate();
+    }
 }
