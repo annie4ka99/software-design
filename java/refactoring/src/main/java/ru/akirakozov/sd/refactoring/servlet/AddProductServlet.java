@@ -20,8 +20,7 @@ public class AddProductServlet extends BaseProductServlet {
             statement.executeUpdate(sql);
         });
 
-        response.setContentType("text/html");
-        response.setStatus(HttpServletResponse.SC_OK);
+        setHeaders(response);
         response.getWriter().println("OK");
     }
 }
