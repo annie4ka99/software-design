@@ -14,11 +14,11 @@ public class QueryServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String command = request.getParameter("command");
         PrintWriter writer = response.getWriter();
-        QueryHandler responseHandler = getResponseHandler(command);
-        if (responseHandler == null) {
+        DBHandler dbHandler = getResponseHandler(command);
+        if (dbHandler == null) {
             writer.println("Unknown command: " + command);
         } else {
-            responseHandler.processQuery(request, response);
+            dbHandler.processQuery(request, response);
         }
     }
 

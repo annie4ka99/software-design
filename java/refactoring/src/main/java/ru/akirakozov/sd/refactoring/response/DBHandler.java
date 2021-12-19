@@ -2,9 +2,8 @@ package ru.akirakozov.sd.refactoring.response;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
+import java.io.IOException;
+import java.sql.*;
 
 public abstract class DBHandler {
     protected String dbConnectionUrl = "jdbc:sqlite:test.db";
@@ -23,10 +22,18 @@ public abstract class DBHandler {
         }
     }
 
+    public void processQuery(HttpServletRequest request, HttpServletResponse response) {
+        withDbConnection(statement -> {
+            process(statement, request, response);
+        });
+        setHeaders(response);
+    }
+
     protected void setHeaders(HttpServletResponse response) {
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
-    abstract void processQuery(HttpServletRequest request, HttpServletResponse response);
+    abstract void process(Statement statement, HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException;
 }

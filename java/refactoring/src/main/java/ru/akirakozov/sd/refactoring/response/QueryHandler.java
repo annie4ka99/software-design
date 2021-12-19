@@ -2,22 +2,22 @@ package ru.akirakozov.sd.refactoring.response;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public abstract class QueryHandler extends DBHandler {
     @Override
-    public void processQuery(HttpServletRequest request, HttpServletResponse response) {
-        withDbConnection(statement -> {
-            ResultSet rs = statement.executeQuery(getQuery());
-            PrintWriter writer = response.getWriter();
-            writer.println("<html><body>");
-            writeQueryResponse(response.getWriter(), rs);
-            writer.println("</body></html>");
-            rs.close();
-        });
-        setHeaders(response);
+    protected void process(Statement statement,
+                           HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        ResultSet rs = statement.executeQuery(getQuery());
+        PrintWriter writer = response.getWriter();
+        writer.println("<html><body>");
+        writeQueryResponse(response.getWriter(), rs);
+        writer.println("</body></html>");
+        rs.close();
     }
 
     abstract void writeQueryResponse(PrintWriter responseWriter, ResultSet resultSet);
