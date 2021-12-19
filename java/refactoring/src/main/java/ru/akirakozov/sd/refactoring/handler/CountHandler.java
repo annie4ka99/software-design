@@ -1,4 +1,4 @@
-package ru.akirakozov.sd.refactoring.response;
+package ru.akirakozov.sd.refactoring.handler;
 
 import java.io.PrintWriter;
 import java.sql.ResultSet;

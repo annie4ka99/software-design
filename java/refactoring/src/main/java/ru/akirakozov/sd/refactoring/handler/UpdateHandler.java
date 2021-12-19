@@ -1,4 +1,4 @@
-package ru.akirakozov.sd.refactoring.response;
+package ru.akirakozov.sd.refactoring.handler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -1,19 +1,17 @@
-package ru.akirakozov.sd.refactoring.response;
+package ru.akirakozov.sd.refactoring.handler;
 
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 
-public class MinHandler extends QueryHandler {
+public class MaxHandler extends QueryHandler {
     @Override
     void writeQueryResponse(PrintWriter responseWriter, ResultSet resultSet) {
-        responseWriter.println("<h1>Product with min price: </h1>");
+        responseWriter.println("<h1>Product with max price: </h1>");
         processSelectAllResult(responseWriter, resultSet);
     }
 
     @Override
     String getQuery() {
-        return "SELECT * FROM PRODUCT ORDER BY PRICE LIMIT 1";
+        return "SELECT * FROM PRODUCT ORDER BY PRICE DESC LIMIT 1";
     }
-
-
 }

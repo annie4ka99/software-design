@@ -1,7 +1,7 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
-import ru.akirakozov.sd.refactoring.response.AddProductHandler;
-import ru.akirakozov.sd.refactoring.response.DBHandler;
+import ru.akirakozov.sd.refactoring.handler.AddProductHandler;
+import ru.akirakozov.sd.refactoring.handler.DBHandler;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
